@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-class Pantallas {
+class Pantallas {//Pantallas para darles conocimiento al usuario en donde se encuentra
 
 private:
 
