@@ -3,7 +3,7 @@
 #include "box2d.h"
 #include "raylib.h"
 
-Enemigo::Enemigo(b2World& mundo, b2Vec2 pos, b2Vec2 tam, Texture2D tex,Texture2D tex_2) {
+Enemigo::Enemigo(b2World& mundo, b2Vec2 pos, b2Vec2 tam, Texture2D tex,Texture2D tex_2) {//Creo al enemigo, le doy un tipo-
 
 	posicion = pos;
 	tamano = tam;
@@ -34,7 +34,7 @@ Enemigo::Enemigo(b2World& mundo, b2Vec2 pos, b2Vec2 tam, Texture2D tex,Texture2D
 	cuerpo->SetLinearVelocity(b2Vec2(5.0f,0.0f));
 }
 
-void Enemigo::actualizacion() {
+void Enemigo::actualizacion() {//Le doy una velocidad que cambia en cada ciclo del bucle principal para que no le afecte la gravedad y seteo los limites del prismatic joints
 
 	b2Vec2 vel = cuerpo->GetLinearVelocity();
 	vel.y = 0; 
@@ -49,7 +49,7 @@ void Enemigo::actualizacion() {
 	
 
 }
-void Enemigo::dibujar() {
+void Enemigo::dibujar() {//Dibujo al Enemigo ,su proyectil y barra de vida
 
 	b2Vec2 pos = cuerpo->GetPosition();
 	
@@ -72,7 +72,7 @@ void Enemigo::dibujar() {
 
 }
 
-Proyectiles* Enemigo::disparo(b2World& mundo) {
+Proyectiles* Enemigo::disparo(b2World& mundo) {//Crea el proyectil del enemigo
 
 	b2Vec2 posDisparo = cuerpo->GetPosition();
 	posDisparo.x += 0.1f;
@@ -83,7 +83,7 @@ Proyectiles* Enemigo::disparo(b2World& mundo) {
 	return proyectil;
 }
 
-void Enemigo::conexion(b2World& mundo, b2Body* cuerpo_2) {
+void Enemigo::conexion(b2World& mundo, b2Body* cuerpo_2) {//Hace la conexion que es un prismatic joint
 
 	b2PrismaticJointDef jointDef;
 
@@ -104,7 +104,7 @@ void Enemigo::conexion(b2World& mundo, b2Body* cuerpo_2) {
 
 }
 
-void Enemigo::colision(Cuerpos* otro) {
+void Enemigo::colision(Cuerpos* otro) {//Detecta si colisiona con el proyectil del jugador y se le resta vida
 
 
 	if (otro->tipo == Proyectil ) {
@@ -124,10 +124,10 @@ void Enemigo::colision(Cuerpos* otro) {
 bool Enemigo::vivo() {
 
 
-	return vida > 0;
+	return vida > 0;//Si no la vida es menor a 0 significa que murio
 }
 
 void Enemigo::reinicio() {
 
-	vida = 10;
+	vida = 10;//reinicio el atributo de vida
 }
