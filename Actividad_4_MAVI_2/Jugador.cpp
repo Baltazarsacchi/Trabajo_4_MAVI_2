@@ -5,7 +5,7 @@
 #include "Cuerpos.h"
 
 
-Jugador::Jugador(b2World& mundo, b2Vec2 pos, b2Vec2 tam,Texture2D base,Texture2D arma) {
+Jugador::Jugador(b2World& mundo, b2Vec2 pos, b2Vec2 tam,Texture2D base,Texture2D arma) {//Creo el cuerpo del jugador y defino el tipo que utiliza
 	
 	textura_1 = base;
 	textura_2 = arma;
@@ -34,7 +34,7 @@ Jugador::Jugador(b2World& mundo, b2Vec2 pos, b2Vec2 tam,Texture2D base,Texture2D
 
 }
 
-void Jugador::actualizacion() {
+void Jugador::actualizacion() {//Le permito moverse al jugador hacia la derecha o izquierda
 
 	b2Vec2 velocidad = cuerpo->GetLinearVelocity();
 
@@ -56,7 +56,7 @@ void Jugador::actualizacion() {
 	
 }
 
-void Jugador::dibujar() {
+void Jugador::dibujar() {//Dibujo al jugador, su vida y sus proyectiles
 
 	b2Vec2 pos = cuerpo->GetPosition();
 	
@@ -75,18 +75,18 @@ void Jugador::dibujar() {
 	DrawText(TextFormat("Vidas : %.0f", (float)vidas), 750.0f, 10.0f, 7.5f, BLACK);
 }
 
-void Jugador::reinicio() {
+void Jugador::reinicio() {//Reinicio los atributos posicion, velocidad y vida del jugador
 
 	cuerpo->SetTransform(b2Vec2(posicion.x/Escala,posicion.y/Escala), 0.0f);
 	cuerpo->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 	vidas = 3;
 
 }
-bool Jugador::vivo() {
+bool Jugador::vivo() {//Retorna una resuesta a la pregunta de si esta vivo
 
 	return vidas > 0;
 }
-Proyectiles* Jugador::disparo(b2World& mundo) {
+Proyectiles* Jugador::disparo(b2World& mundo) {//Crea los proyectiles del jugador
 
 	b2Vec2 posDisparo = cuerpo->GetPosition();
 	posDisparo.x += 0.1f;
@@ -97,7 +97,7 @@ Proyectiles* Jugador::disparo(b2World& mundo) {
 	return proyectil;
 }
 
-void Jugador::colision(Cuerpos* otro) {
+void Jugador::colision(Cuerpos* otro) {//Chequea que la colision con un proyectil que sea del enemigo y se le resta vidas.
 
 	if (otro->tipo == Proyectil) {
 
