@@ -2,7 +2,7 @@
 #include "raylib.h"
 #include "Proyectiles.h"
 
-Proyectiles::Proyectiles(b2World& mundo, b2Vec2 pos, b2Vec2 tam, Dueno es, float dire, Texture2D tex) {
+Proyectiles::Proyectiles(b2World& mundo, b2Vec2 pos, b2Vec2 tam, Dueno es, float dire, Texture2D tex) {//Creaccion del cuerpo del proyectil, defino su tipo y desde quien fue lanzado
 
 	tamano = tam;
 	mando = es;
@@ -36,7 +36,7 @@ Proyectiles::Proyectiles(b2World& mundo, b2Vec2 pos, b2Vec2 tam, Dueno es, float
 
 }
 
-void Proyectiles::actualizacion() {
+void Proyectiles::actualizacion() {//Le aplico una velocidad con su respectiva direccion
 	b2Vec2 vel = cuerpo->GetLinearVelocity();
 	vel.x = 0.0f;
 	vel.y = 10.0f * direccion;
@@ -44,11 +44,9 @@ void Proyectiles::actualizacion() {
 	cuerpo->SetLinearVelocity(vel);
 }
 
-void Proyectiles::dibujar() {
+void Proyectiles::dibujar() {//Dibujo los proyectiles 
 
 	b2Vec2 posPro = cuerpo->GetPosition();
-	
-	//DrawRectanglePro(Rectangle{ posPro.x * Tamano, posPro.y * Tamano, tamano.x/4.0f, tamano.y/2.0f }, Vector2{ tamano.x / 2.0f, tamano.y / 2.0f }, 0.0f, RED);
 
 	Rectangle source = { 0, 0,(float)textura.width ,(float)textura.height };
 
@@ -59,7 +57,7 @@ void Proyectiles::dibujar() {
 	DrawTexturePro(textura, source, dest, origin, 0.0f, WHITE);
 }
 
-void Proyectiles::colision(Cuerpos* otro) {
+void Proyectiles::colision(Cuerpos* otro) {//Detecta las respectivas colisiones que puede llegar a hacer el proyectil
 
 	if (mando == Pj && otro->tipo == Personaje) { return; }
 	if (mando == Em && otro->tipo == Enemigos) { return; }
@@ -79,6 +77,6 @@ void Proyectiles::colision(Cuerpos* otro) {
 	
 }
 
-b2Body* Proyectiles::obtenerCuerpo() {
+b2Body* Proyectiles::obtenerCuerpo() {//Devuelve el cuerpo del proyectil
 	return cuerpo;
 }
