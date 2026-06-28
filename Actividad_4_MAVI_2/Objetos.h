@@ -18,13 +18,13 @@ private:
 public:
 	bool estado;
 
-	void crear_objetos(b2World& world, b2Vec2 posicion, b2Vec2 tamano, bool esEstatico, Color col);
-	b2Body* obtenerCuerpo() { return cuerpo; }
-	void dibujar() override;
-	b2Vec2 obtenerPosicionX();
+	void crear_objetos(b2World& world, b2Vec2 posicion, b2Vec2 tamano, bool esEstatico, Color col);//Constructor
+	b2Body* obtenerCuerpo() { return cuerpo; }//Devuelve el cuerpo del objeto
+	void dibujar() override;//Funciones heredadas
+	b2Vec2 obtenerPosicionX();//Posicion del objeto
 
-	float angulo();
-	void reiniciarPosicion();
+	float angulo();//Angulo del objeto
+	void reiniciarPosicion();//Reinicia su posicion
 	b2Body* Obtener_cuerpo();
 
 
