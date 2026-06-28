@@ -9,7 +9,7 @@
 
 using namespace std;
 
-const float Escala = 100.0f;
+const float Escala = 100.0f;//Hago la trasformaicon de 1 metro = 100 px.
 
 class Jugador : public Cuerpos {
 
@@ -26,16 +26,16 @@ private:
 
 public:
 	
-	Jugador(b2World& mundo, b2Vec2 pos, b2Vec2 tam,Texture2D base,Texture2D arma);
+	Jugador(b2World& mundo, b2Vec2 pos, b2Vec2 tam,Texture2D base,Texture2D arma);//Constructor de la clase jugador
 
-	Proyectiles* disparo(b2World& mundo);
+	Proyectiles* disparo(b2World& mundo);//Creacion de los proyectriles del jugador
 
-	void actualizacion() override;
+	void actualizacion() override;//Funciones heredadas
 	void dibujar() override;
 
-	void reinicio();
-	bool vivo();
-	void colision(Cuerpos* otro) override;
+	void reinicio();//Reinicia atributos del jugador
+	bool vivo();//Pregunta si esta vivo el jugador
+	void colision(Cuerpos* otro) override;//Hace el chequo de las colisiones del jugador
 
 };
 
