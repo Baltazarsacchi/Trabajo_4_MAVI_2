@@ -10,14 +10,18 @@
 int main() {
 
 	float ancho = 800, alto = 600;
-	int indice = -1;
-	float tiempo_1 = 0.5f,tiempo_2 = 0.0f;
-	bool pantalla_1 = true, pantalla_2 = false, pantalla_3 = false;
-	bool gano,sonido;
+	
+	float tiempo_1 = 0.5f,tiempo_2 = 0.0f;//Variables de control para los proyectiles
+	bool pantalla_1 = true, pantalla_2 = false, pantalla_3 = false;//Valores banderas para las pantallas
+	bool gano,sonido;//Valores banderas 
 
+    //Inicializacion de la pantalla y el sonido.
+	
 	InitWindow(ancho, alto, "Actividad 4 de MAVI 2");
 	InitAudioDevice();
 
+    //Carga de Texturas y Sonidos
+	
 	Texture2D pj = LoadTexture("textura/personaje.png");
 	Texture2D en = LoadTexture("textura/enemigo.png");
 	Texture2D disparo_1 = LoadTexture("textura/disparo_1.png");
@@ -28,6 +32,8 @@ int main() {
 	Sound gana = LoadSound("sonidos/gana.mp3");
 	Sound pierde = LoadSound("sonidos/pierde.mp3");
 
+    //Creaccion del mundo y los objetos dentro del el
+	
 	b2World mundo(b2Vec2(0.0f, 9.81f));
 
 	Contacto contacto;
@@ -54,9 +60,9 @@ int main() {
 	SetTargetFPS(60);
 	while (!WindowShouldClose()) {
 
-		mundo.Step(1.0f / 60.0f, 6, 2);
+		mundo.Step(1.0f / 60.0f, 6, 2);//La actualizacion del mundo
 
-		if (pantalla_1) {
+		if (pantalla_1) {//Pantalla de inicio
 			
 			BeginDrawing();
 			ClearBackground(BLACK);
@@ -65,7 +71,7 @@ int main() {
 			
 			EndDrawing();
 			
-			if (IsKeyPressed(KEY_ENTER)) {
+			if (IsKeyPressed(KEY_ENTER)) {//Si pulsa el usario enter el juego comienza
 
 				pantalla_1 = false;
 				pantalla_2 = true;
@@ -73,44 +79,45 @@ int main() {
 
 		}
 
-		if(pantalla_2){
-		
+		if(pantalla_2){//Pantalla de juego
+
+			//Sonido se vuelve true para luego utilizarla en la pantalla final, el tiempo_1 y tiempo_2 son los que le dan un tiempo de demora a los proyectiles
 			sonido = true;
 			tiempo_1 += GetFrameTime();
 			tiempo_2 += GetFrameTime();
 
-			if (IsKeyPressed(KEY_SPACE) && tiempo_1>=0.5f) {
+			if (IsKeyPressed(KEY_SPACE) && tiempo_1>=0.5f) {//El usuario crea su proyectil
 			
-				proyectil_jugador.push_back(jugador.disparo(mundo));
-				tiempo_1 = 0.0f;
+				proyectil_jugador.push_back(jugador.disparo(mundo));//Se crea y se almacena en un vector
+				tiempo_1 = 0.0f;//Comienza la demora
 		
 			}
 		
-			for (auto* p : proyectil_jugador) {
+			for (auto* p : proyectil_jugador) {//Se mueve el proyectil del usuario
 			
 				p->actualizacion();
 		    }
 
-			if (tiempo_2 >= 3.5f) {
+			if (tiempo_2 >= 3.5f) {//Cada vez que se cumple esa condicion el Enemigo crea su proyectil
 				proyectil_enemigo.push_back(enemigo.disparo(mundo));
 
 				tiempo_2 = 0.0f;
 			}
 			
-			if (!proyectil_enemigo.empty()) {
+			if (!proyectil_enemigo.empty()) {//Verifica que el vector no este vacio 
 			
-				for (auto* p : proyectil_enemigo) {
+				for (auto* p : proyectil_enemigo) {//Hace que el proyectil enemigo se mueva
 
 					p->actualizacion();
 				}
 
 			}
 
-		    jugador.actualizacion();
+		    jugador.actualizacion();//Permite que el jugador se mueva
 
-		    for (int i = 0; i < proyectil_jugador.size(); i++) {
+		    for (int i = 0; i < proyectil_jugador.size(); i++) {//Chequea cual de todos los proyectiles del jugador colisono
 
-			    if (proyectil_jugador[i]->destruccion) {
+			    if (proyectil_jugador[i]->destruccion) {//Si colisono suena un sonido, los destruyen del mundo y lo eliminan del vector
 					PlaySound(golpe);
 				
 					mundo.DestroyBody(proyectil_jugador[i]->obtenerCuerpo());
@@ -120,9 +127,9 @@ int main() {
 				    i--;
 			    }
 		    }
-			for (int i = 0; i < proyectil_enemigo.size(); i++) {
+			for (int i = 0; i < proyectil_enemigo.size(); i++) {//Chequea cual de todos los proyectiles del enemigo colisono
 
-				if (proyectil_enemigo[i]->destruccion) {
+				if (proyectil_enemigo[i]->destruccion) {//Si colisono lo destruyen del mundo y lo eliminan del vector
 
 
 					mundo.DestroyBody(proyectil_enemigo[i]->obtenerCuerpo());
@@ -133,16 +140,16 @@ int main() {
 				}
 			}
 
-		    enemigo.actualizacion();
+		    enemigo.actualizacion();//Actualiza el movimiento del enemigo
 
 
-			if (!jugador.vivo()) {
+			if (!jugador.vivo()) {//Si el jugador muere, Pierde
 				pantalla_2 = false;
 				pantalla_3 = true;
 				gano = false;
 			}
 			
-			if (!enemigo.vivo()) {
+			if (!enemigo.vivo()) {//Si el enemigo muere, Gana
 				
 				pantalla_2 = false;
 				pantalla_3 = true;
@@ -152,6 +159,7 @@ int main() {
  
 		    BeginDrawing();
 		    ClearBackground(BLACK);
+			//Dibujos de pantallas del juego, estructuras, enemigo, proyectiles y jugador
 			pantalla.Juego();
 		    piso.dibujar();
 		    techo.dibujar();
@@ -174,27 +182,27 @@ int main() {
 		    EndDrawing();
 	    }
 
-		if (pantalla_3) {
+		if (pantalla_3) {//Pantalla de victoria o derrota
 			
 			BeginDrawing();
 			ClearBackground(WHITE);
 			
-			pantalla.Final(gano);
+			pantalla.Final(gano);//Segun el valor de gano muestra una pantalla
 			
 			EndDrawing();
 			
-			if (sonido && gano) {
+			if (sonido && gano) {//Suena un sonido si gano
 
 				PlaySound(gana);
 				sonido = false;
 			}
-			if (sonido && !gano) {
+			if (sonido && !gano) {//Suena un sonido si perdio
 
 				PlaySound(pierde);
 				sonido = false;
 			}
 
-			if (IsKeyPressed(KEY_R)) {
+			if (IsKeyPressed(KEY_R)) {// SI presicona R reinicia el juego
 
 
 				proyectil_enemigo.clear();
